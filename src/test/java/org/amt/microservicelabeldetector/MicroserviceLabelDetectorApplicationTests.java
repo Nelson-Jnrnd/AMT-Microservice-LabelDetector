@@ -39,7 +39,6 @@ class MicroserviceLabelDetectorApplicationTests {
         return "http://localhost:" + port;
     }
 
-
     @Test
     public void postLabelsShouldReturnLabel() throws Exception {
         // Given
