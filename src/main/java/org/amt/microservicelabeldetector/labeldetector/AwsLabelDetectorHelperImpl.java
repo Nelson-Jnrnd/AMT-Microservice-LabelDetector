@@ -1,6 +1,5 @@
 package org.amt.microservicelabeldetector.labeldetector;
 
-import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.rekognition.RekognitionClient;
 import software.amazon.awssdk.services.rekognition.model.*;
@@ -27,22 +26,22 @@ public class AwsLabelDetectorHelperImpl implements ILabelDetector {
                 .build();
     }
 
-    public DetectLabelResult detectLabels(String bucket, String key, int maxLabels, int minConfidence) throws LabelDetectorException {
+    public DetectLabelResult detectLabels(String bucket, String key, int maxLabels, float minConfidence) throws LabelDetectorException {
             return detectLabels(DetectLabelsRequest.builder()
                     .image(Image.builder().s3Object(S3Object.builder().bucket(bucket).name(key).build()).build()), maxLabels, minConfidence);
     }
 
-    public DetectLabelResult detectLabels(byte[] image, int maxLabels, int minConfidence) throws LabelDetectorException {
+    public DetectLabelResult detectLabels(byte[] image, int maxLabels, float minConfidence) throws LabelDetectorException {
             return detectLabels( DetectLabelsRequest.builder()
                     .image(getImage(image)), maxLabels, minConfidence);
     }
 
-    public DetectLabelResult detectLabels(URL url, int maxLabels, int minConfidence) throws IOException, LabelDetectorException {
+    public DetectLabelResult detectLabels(URL url, int maxLabels, float minConfidence) throws IOException, LabelDetectorException {
             return detectLabels(DetectLabelsRequest.builder()
                     .image(getImage(downloadImage(url))), maxLabels, minConfidence);
     }
 
-    private DetectLabelResult detectLabels(DetectLabelsRequest.Builder request, int maxLabels, int minConfidence) throws LabelDetectorException {
+    private DetectLabelResult detectLabels(DetectLabelsRequest.Builder request, int maxLabels, float minConfidence) throws LabelDetectorException {
         if (maxLabels < 1) {
             throw new InvalidParamException("Max labels must be greater than 0");
         }
@@ -53,7 +52,7 @@ public class AwsLabelDetectorHelperImpl implements ILabelDetector {
             throw new InvalidParamException("Request must not be null");
         }
         try {
-            return new DetectLabelResult(rekClient.detectLabels(request.maxLabels(maxLabels).minConfidence((float) minConfidence).build()));
+            return new DetectLabelResult(rekClient.detectLabels(request.maxLabels(maxLabels).minConfidence((minConfidence)).build()));
 
         } catch (InvalidS3ObjectException e) {
             throw new InvalidDataObjectException(e.getMessage());

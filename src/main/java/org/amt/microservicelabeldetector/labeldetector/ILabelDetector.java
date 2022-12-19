@@ -25,7 +25,7 @@ public interface ILabelDetector {
      * @param minConfidence the minimum confidence level to accept a label.
      * @return the result of the label detection.
      */
-    ILabelDetectorResult detectLabels(byte[] image, int maxLabels, int minConfidence) throws LabelDetectorException;
+    ILabelDetectorResult detectLabels(byte[] image, int maxLabels, float minConfidence) throws LabelDetectorException;
 
     /**
      *
@@ -39,7 +39,7 @@ public interface ILabelDetector {
      * @param minConfidence the minimum confidence level to accept a label.
      * @return the result of the label detection.
      */
-    ILabelDetectorResult detectLabels(String bucket, String key, int maxLabels, int minConfidence) throws LabelDetectorException;
+    ILabelDetectorResult detectLabels(String bucket, String key, int maxLabels, float minConfidence) throws LabelDetectorException;
 
     /**
      *
@@ -52,7 +52,7 @@ public interface ILabelDetector {
      * @param minConfidence the minimum confidence level to accept a label.
      * @return the result of the label detection.
      */
-    ILabelDetectorResult detectLabels(URL url, int maxLabels, int minConfidence) throws IOException, LabelDetectorException;
+    ILabelDetectorResult detectLabels(URL url, int maxLabels, float minConfidence) throws IOException, LabelDetectorException;
 
     class LabelDetectorException extends Exception {
         public LabelDetectorException(String message) {
