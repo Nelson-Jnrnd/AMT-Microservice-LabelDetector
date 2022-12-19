@@ -27,12 +27,4 @@ public interface ILabelDetectorResult {
      */
     int getNbLabels();
 
-    /**
-     * <p>
-     *     This method returns the result of the detection in json format.
-     * </p>
-     * @return     the result of the detection in json format.
-     */
-    String toJson();
-
 }

@@ -4,7 +4,7 @@ import org.amt.microservicelabeldetector.labeldetector.AwsLabelDetectorHelperImp
 import org.amt.microservicelabeldetector.labeldetector.AwsServiceConfigurator;
 import org.amt.microservicelabeldetector.labeldetector.ILabelDetector;
 import org.amt.microservicelabeldetector.labeldetector.ILabelDetectorResult;
-import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,8 +23,16 @@ public class LabelDetectorController {
     }
 
     @PostMapping("/labels")
-    public ResponseEntity<String> getLabels(@RequestParam("imageURL") String imageURL) throws Exception {
-            ILabelDetectorResult result = labelDetector.detectLabels(new URL(imageURL), 10);
-            return ResponseEntity.ok().body(result.toJson());
+    public ResponseEntity<ILabelDetectorResult> getLabels(@RequestParam("imageURL") String imageURL, @RequestParam("maxLabels") int maxLabels, @RequestParam("confidence") int confidence) {
+        try {
+            ILabelDetectorResult result = labelDetector.detectLabels(new URL(imageURL), maxLabels, confidence);
+            return ResponseEntity.ok().body(result);
+        } catch (ILabelDetector.DeniedAccessException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (ILabelDetector.LabelDetectorRequestException | MalformedURLException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

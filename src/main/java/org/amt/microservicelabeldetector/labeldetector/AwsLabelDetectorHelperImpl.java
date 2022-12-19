@@ -1,5 +1,6 @@
 package org.amt.microservicelabeldetector.labeldetector;
 
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.rekognition.RekognitionClient;
 import software.amazon.awssdk.services.rekognition.model.*;
@@ -7,8 +8,6 @@ import software.amazon.awssdk.utils.IoUtils;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -28,42 +27,53 @@ public class AwsLabelDetectorHelperImpl implements ILabelDetector {
                 .build();
     }
 
-    public DetectLabelResult detectLabels(String bucket, String key, int maxLabels) throws Exception {
-        try {
-            DetectLabelsRequest request = DetectLabelsRequest.builder()
-                    .image(Image.builder().s3Object(S3Object.builder().bucket(bucket).name(key).build()).build())
-                    .maxLabels(maxLabels)
-                    .build();
-
-            return new DetectLabelResult(rekClient.detectLabels(request));
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
+    public DetectLabelResult detectLabels(String bucket, String key, int maxLabels, int minConfidence) throws LabelDetectorException {
+            return detectLabels(DetectLabelsRequest.builder()
+                    .image(Image.builder().s3Object(S3Object.builder().bucket(bucket).name(key).build()).build()), maxLabels, minConfidence);
     }
 
-    public DetectLabelResult detectLabels(byte[] image, int nbLabels) throws Exception {
-        try {
-            DetectLabelsRequest detectLabelsRequest = DetectLabelsRequest.builder()
-                    .image(getImage(image))
-                    .maxLabels(nbLabels)
-                    .build();
-
-            return new DetectLabelResult(rekClient.detectLabels(detectLabelsRequest));
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
+    public DetectLabelResult detectLabels(byte[] image, int maxLabels, int minConfidence) throws LabelDetectorException {
+            return detectLabels( DetectLabelsRequest.builder()
+                    .image(getImage(image)), maxLabels, minConfidence);
     }
 
-    public DetectLabelResult detectLabels(URL url, int nbLabels) throws Exception {
-        try {
-            DetectLabelsRequest detectLabelsRequest = DetectLabelsRequest.builder()
-                    .image(getImage(downloadImage(url)))
-                    .maxLabels(nbLabels)
-                    .build();
+    public DetectLabelResult detectLabels(URL url, int maxLabels, int minConfidence) throws IOException, LabelDetectorException {
+            return detectLabels(DetectLabelsRequest.builder()
+                    .image(getImage(downloadImage(url))), maxLabels, minConfidence);
+    }
 
-            return new DetectLabelResult(rekClient.detectLabels(detectLabelsRequest));
+    private DetectLabelResult detectLabels(DetectLabelsRequest.Builder request, int maxLabels, int minConfidence) throws LabelDetectorException {
+        try {
+            if (maxLabels < 1) {
+                throw new InvalidParamException("Max labels must be greater than 0");
+            }
+            if (minConfidence < 0 || minConfidence > 100) {
+                throw new InvalidParamException("Min confidence must be between 0 and 100");
+            }
+            if (request == null) {
+                throw new InvalidParamException("Request must not be null");
+            }
+
+            return new DetectLabelResult(rekClient.detectLabels(request.maxLabels(maxLabels).minConfidence(minConfidence / 100f).build()));
+
+        } catch (InvalidS3ObjectException e) {
+            throw new InvalidDataObjectException(e.getMessage());
+        } catch (InvalidParameterException e) {
+            throw new InvalidParamException(e.getMessage());
+        } catch (ImageTooLargeException e) {
+            throw new InvalidImageSizeException(e.getMessage());
+        } catch (InvalidImageFormatException e) {
+            throw new ImageFormatException(e.getMessage());
+        } catch (AccessDeniedException e) {
+            throw new DeniedAccessException(e.getMessage());
+        } catch (ProvisionedThroughputExceededException e) {
+            throw new TooManyRequestsException(e.getMessage());
+        } catch (InternalServerErrorException e) {
+            throw new InternalErrorException(e.getMessage());
+        } catch (ThrottlingException e) {
+            throw new ServiceUnavailableException(e.getMessage());
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new LabelDetectorException(e.getMessage());
         }
     }
 
@@ -98,22 +108,6 @@ public class AwsLabelDetectorHelperImpl implements ILabelDetector {
         @Override
         public int getNbLabels() {
             return response.labels().size();
-        }
-
-        public String toJson() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("{");
-            sb.append("\"labels\": [");
-            for (Label label : response.labels()) {
-                sb.append("{");
-                sb.append("\"name\": \"").append(label.name()).append("\",");
-                sb.append("\"confidence\": ").append(label.confidence());
-                sb.append("},");
-            }
-            sb.deleteCharAt(sb.length() - 1);
-            sb.append("]");
-            sb.append("}");
-            return sb.toString();
         }
     }
 }
