@@ -9,8 +9,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AwsLabelDetectorHelperImplTest {
     private static ILabelDetector labelDetector;
@@ -82,63 +81,44 @@ public class AwsLabelDetectorHelperImplTest {
     }
 
     @Test
-    public void testDetectLabelsFromByteArrayWithMaxLabelsInferiorToZeroShouldRaiseException() throws Exception {
+    public void testDetectLabelsFromByteArrayWithMaxLabelsInferiorToZeroShouldRaiseException() {
         // Given
         final int expectedNumberOfLabels = -1;
         final int minimumConfidence = 50;
 
-        // When
-        try {
-            labelDetector.detectLabels(imageBytes, expectedNumberOfLabels, minimumConfidence);
-            assert false;
-        } catch (ILabelDetector.InvalidParamException e) {
-            assert true;
-        }
+        // When & Then
+        assertThrows(ILabelDetector.InvalidParamException.class, () -> labelDetector.detectLabels(imageBytes, expectedNumberOfLabels, minimumConfidence));
+
     }
 
     @Test
-    public void testDetectLabelsFromByteArrayWithMinConfidenceInferiorToZeroShouldRaiseException() throws Exception {
+    public void testDetectLabelsFromByteArrayWithMinConfidenceInferiorToZeroShouldRaiseException() {
         // Given
         final int expectedNumberOfLabels = 3;
         final int minimumConfidence = -1;
 
-        // When
-        try {
-            labelDetector.detectLabels(imageBytes, expectedNumberOfLabels, minimumConfidence);
-            assert false;
-        } catch (ILabelDetector.InvalidParamException e) {
-            assert true;
-        }
+        // When & Then
+        assertThrows(ILabelDetector.InvalidParamException.class, () -> labelDetector.detectLabels(imageBytes, expectedNumberOfLabels, minimumConfidence));
     }
 
     @Test
-    public void testDetectLabelsFromByteArrayWithMinConfidenceSuperiorToOneHundredShouldRaiseException() throws Exception {
+    public void testDetectLabelsFromByteArrayWithMinConfidenceSuperiorToOneHundredShouldRaiseException() {
         // Given
         final int expectedNumberOfLabels = 3;
         final int minimumConfidence = 101;
 
-        // When
-        try {
-            labelDetector.detectLabels(imageBytes, expectedNumberOfLabels, minimumConfidence);
-            assert false;
-        } catch (ILabelDetector.InvalidParamException e) {
-            assert true;
-        }
+        // When & Then
+        assertThrows(ILabelDetector.InvalidParamException.class, () -> labelDetector.detectLabels(imageBytes, expectedNumberOfLabels, minimumConfidence));
     }
 
     @Test
-    public void testDetectLabelsFromByteArrayWithNullImageShouldRaiseException() throws Exception {
+    public void testDetectLabelsFromByteArrayWithNullImageShouldRaiseException() {
         // Given
         final int expectedNumberOfLabels = 3;
         final int minimumConfidence = 50;
 
-        // When
-        try {
-            labelDetector.detectLabels((byte[]) null, expectedNumberOfLabels, minimumConfidence);
-            assert false;
-        } catch (NullPointerException e) {
-            assert true;
-        }
+        // When & Then
+        assertThrows(NullPointerException.class, () -> labelDetector.detectLabels((byte[])null, expectedNumberOfLabels, minimumConfidence));
     }
 
     @Test
@@ -209,48 +189,33 @@ public class AwsLabelDetectorHelperImplTest {
     }
 
     @Test
-    public void testDetectLabelsFromURLWithMinConfidenceInferiorToZeroShouldRaiseException() throws Exception {
+    public void testDetectLabelsFromURLWithMinConfidenceInferiorToZeroShouldRaiseException() {
         // Given
         final int expectedNumberOfLabels = 3;
         final int minimumConfidence = -1;
 
-        // When
-        try {
-            labelDetector.detectLabels(imageURL, expectedNumberOfLabels, minimumConfidence);
-            assert false;
-        } catch (ILabelDetector.InvalidParamException e) {
-            assert true;
-        }
+        // When & Then
+        assertThrows(ILabelDetector.InvalidParamException.class, () -> labelDetector.detectLabels(imageURL, expectedNumberOfLabels, minimumConfidence));
     }
 
     @Test
-    public void testDetectLabelsFromURLWithMinConfidenceSuperiorToOneHundredShouldRaiseException() throws Exception {
+    public void testDetectLabelsFromURLWithMinConfidenceSuperiorToOneHundredShouldRaiseException() {
         // Given
         final int expectedNumberOfLabels = 3;
         final int minimumConfidence = 101;
 
-        // When
-        try {
-            labelDetector.detectLabels(imageURL, expectedNumberOfLabels, minimumConfidence);
-            assert false;
-        } catch (ILabelDetector.InvalidParamException e) {
-            assert true;
-        }
+        // When & Then
+        assertThrows(ILabelDetector.InvalidParamException.class, () -> labelDetector.detectLabels(imageURL, expectedNumberOfLabels, minimumConfidence));
     }
 
     @Test
-    public void testDetectLabelsFromURLWithNullImageShouldRaiseException() throws Exception {
+    public void testDetectLabelsFromURLWithNullImageShouldRaiseException() {
         // Given
         final int expectedNumberOfLabels = 3;
         final int minimumConfidence = 50;
 
-        // When
-        try {
-            labelDetector.detectLabels((URL) null, expectedNumberOfLabels, minimumConfidence);
-            assert false;
-        } catch (NullPointerException e) {
-            assert true;
-        }
+        // When & Then
+        assertThrows(NullPointerException.class, () -> labelDetector.detectLabels((URL)null, expectedNumberOfLabels, minimumConfidence));
     }
 
     @Test
@@ -306,33 +271,23 @@ public class AwsLabelDetectorHelperImplTest {
     }
 
     @Test
-    public void testDetectLabelsFromDataObjectWithMaxLabelsInferiorToZeroShouldRaiseException() throws Exception {
+    public void testDetectLabelsFromDataObjectWithMaxLabelsInferiorToZeroShouldRaiseException() {
         // Given
         final int expectedNumberOfLabels = -1;
         final int minimumConfidence = 50;
 
-        // When
-        try {
-            labelDetector.detectLabels(TEST_DATAOBJECT, TEST_DATAOBJECT_KEY, expectedNumberOfLabels, minimumConfidence);
-            assert false;
-        } catch (ILabelDetector.InvalidParamException e) {
-            assert true;
-        }
+        // When & Then
+        assertThrows(ILabelDetector.InvalidParamException.class, () -> labelDetector.detectLabels(TEST_DATAOBJECT, TEST_DATAOBJECT_KEY, expectedNumberOfLabels, minimumConfidence));
     }
 
     @Test
-    public void testDetectLabelsFromDataObjectWithMinConfidenceInferiorToZeroShouldRaiseException() throws Exception {
+    public void testDetectLabelsFromDataObjectWithMinConfidenceInferiorToZeroShouldRaiseException() {
         // Given
         final int expectedNumberOfLabels = 3;
         final int minimumConfidence = -1;
 
-        // When
-        try {
-            labelDetector.detectLabels(TEST_DATAOBJECT, TEST_DATAOBJECT_KEY, expectedNumberOfLabels, minimumConfidence);
-            assert false;
-        } catch (ILabelDetector.InvalidParamException e) {
-            assert true;
-        }
+        // When & Then
+        assertThrows(ILabelDetector.InvalidParamException.class, () -> labelDetector.detectLabels(TEST_DATAOBJECT, TEST_DATAOBJECT_KEY, expectedNumberOfLabels, minimumConfidence));
     }
 
     @Test
@@ -351,47 +306,32 @@ public class AwsLabelDetectorHelperImplTest {
     }
 
     @Test
-    public void testDetectLabelsFromDataObjectWithNullDataObjectShouldRaiseException() throws Exception {
+    public void testDetectLabelsFromDataObjectWithNullDataObjectShouldRaiseException() {
         // Given
         final int expectedNumberOfLabels = 3;
         final int minimumConfidence = 50;
 
-        // When
-        try {
-            labelDetector.detectLabels(null, TEST_DATAOBJECT_KEY, expectedNumberOfLabels, minimumConfidence);
-            assert false;
-        } catch (ILabelDetector.InvalidParamException e) {
-            assert true;
-        }
+        // When & Then
+        assertThrows(ILabelDetector.InvalidParamException.class, () -> labelDetector.detectLabels(null, TEST_DATAOBJECT_KEY, expectedNumberOfLabels, minimumConfidence));
     }
 
     @Test
-    public void testDetectLabelsFromDataObjectWithNullDataObjectKeyShouldRaiseException() throws Exception {
+    public void testDetectLabelsFromDataObjectWithNullDataObjectKeyShouldRaiseException() {
         // Given
         final int expectedNumberOfLabels = 3;
         final int minimumConfidence = 50;
 
-        // When
-        try {
-            labelDetector.detectLabels(TEST_DATAOBJECT, null, expectedNumberOfLabels, minimumConfidence);
-            assert false;
-        } catch (ILabelDetector.InvalidParamException e) {
-            assert true;
-        }
+        // When & Then
+        assertThrows(ILabelDetector.InvalidParamException.class, () -> labelDetector.detectLabels(TEST_DATAOBJECT, null, expectedNumberOfLabels, minimumConfidence));
     }
     
     @Test
-    public void testDetectLabelsFromDataObjectWithNonExistingDataObjectKeyShouldRaiseException() throws Exception {
+    public void testDetectLabelsFromDataObjectWithNonExistingDataObjectKeyShouldRaiseException() {
         // Given
         final int expectedNumberOfLabels = 3;
         final int minimumConfidence = 50;
 
-        // When
-        try {
-            labelDetector.detectLabels(TEST_DATAOBJECT, "nonExistingKey", expectedNumberOfLabels, minimumConfidence);
-            assert false;
-        } catch (ILabelDetector.InvalidDataObjectException e) {
-            assert true;
-        }
+        // When & Then
+        assertThrows(ILabelDetector.InvalidDataObjectException.class, () -> labelDetector.detectLabels(TEST_DATAOBJECT, "nonExistingKey", expectedNumberOfLabels, minimumConfidence));
     }
 }
