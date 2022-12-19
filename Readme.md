@@ -1,6 +1,10 @@
 # Microservice Label Detector
 This microservice allows you to detect labels in an image by providing the image's URL, the maximum number of labels to detect, and the confidence level. It uses the AWS Rekognition service to detect labels in the image.
 
+It has been developped in the context of the AMT Lab along with :
+* [The DataObject Microservice](https://github.com/Nelson-Jnrnd/AMT-Microservice-DataObject)
+* [The main application](https://github.com/Nelson-Jnrnd/AMT-Microservice-Main)
+
 ## Prerequisites
 * A valid AWS account with the Rekognition service enabled
 * Java 8 or higher
