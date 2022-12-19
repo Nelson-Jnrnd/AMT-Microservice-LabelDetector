@@ -43,17 +43,16 @@ public class AwsLabelDetectorHelperImpl implements ILabelDetector {
     }
 
     private DetectLabelResult detectLabels(DetectLabelsRequest.Builder request, int maxLabels, int minConfidence) throws LabelDetectorException {
+        if (maxLabels < 1) {
+            throw new InvalidParamException("Max labels must be greater than 0");
+        }
+        if (minConfidence < 0 || minConfidence > 100) {
+            throw new InvalidParamException("Min confidence must be between 0 and 100");
+        }
+        if (request == null) {
+            throw new InvalidParamException("Request must not be null");
+        }
         try {
-            if (maxLabels < 1) {
-                throw new InvalidParamException("Max labels must be greater than 0");
-            }
-            if (minConfidence < 0 || minConfidence > 100) {
-                throw new InvalidParamException("Min confidence must be between 0 and 100");
-            }
-            if (request == null) {
-                throw new InvalidParamException("Request must not be null");
-            }
-
             return new DetectLabelResult(rekClient.detectLabels(request.maxLabels(maxLabels).minConfidence(minConfidence / 100f).build()));
 
         } catch (InvalidS3ObjectException e) {
