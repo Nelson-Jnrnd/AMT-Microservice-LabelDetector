@@ -53,7 +53,7 @@ public class AwsLabelDetectorHelperImpl implements ILabelDetector {
             throw new InvalidParamException("Request must not be null");
         }
         try {
-            return new DetectLabelResult(rekClient.detectLabels(request.maxLabels(maxLabels).minConfidence(minConfidence / 100f).build()));
+            return new DetectLabelResult(rekClient.detectLabels(request.maxLabels(maxLabels).minConfidence((float) minConfidence).build()));
 
         } catch (InvalidS3ObjectException e) {
             throw new InvalidDataObjectException(e.getMessage());
