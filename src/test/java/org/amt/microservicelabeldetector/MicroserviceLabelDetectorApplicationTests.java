@@ -56,7 +56,7 @@ class MicroserviceLabelDetectorApplicationTests {
         );
 
         // Then
-        response.andExpect(result -> assertTrue(result.getResponse().getContentAsString().toLowerCase().contains(expectedLabel))).andDo(print());
+        response.andExpect(result -> assertTrue(result.getResponse().getContentAsString().toLowerCase().contains(expectedLabel)));
     }
 
     @Test
