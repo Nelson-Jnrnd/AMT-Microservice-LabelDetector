@@ -26,9 +26,9 @@ public class AwsLabelDetectorHelperImpl implements ILabelDetector {
                 .build();
     }
 
-    public DetectLabelResult detectLabels(String bucket, String key, int maxLabels, float minConfidence) throws LabelDetectorException {
+    public DetectLabelResult detectLabels(String dataObject, String key, int maxLabels, float minConfidence) throws LabelDetectorException {
             return detectLabels(DetectLabelsRequest.builder()
-                    .image(Image.builder().s3Object(S3Object.builder().bucket(bucket).name(key).build()).build()), maxLabels, minConfidence);
+                    .image(Image.builder().s3Object(S3Object.builder().bucket(dataObject).name(key).build()).build()), maxLabels, minConfidence);
     }
 
     public DetectLabelResult detectLabels(byte[] image, int maxLabels, float minConfidence) throws LabelDetectorException {

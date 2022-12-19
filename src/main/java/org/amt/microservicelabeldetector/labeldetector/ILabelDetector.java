@@ -33,13 +33,13 @@ public interface ILabelDetector {
      * This method detects the labels on the image.
      * </p>
      * 
-     * @param bucket   the bucket where the image is stored.
+     * @param dataObject   the dataObject where the image is stored.
      * @param key      the key of the image.
      * @param maxLabels the number of labels to detect.
      * @param minConfidence the minimum confidence level to accept a label.
      * @return the result of the label detection.
      */
-    ILabelDetectorResult detectLabels(String bucket, String key, int maxLabels, float minConfidence) throws LabelDetectorException;
+    ILabelDetectorResult detectLabels(String dataObject, String key, int maxLabels, float minConfidence) throws LabelDetectorException;
 
     /**
      *
