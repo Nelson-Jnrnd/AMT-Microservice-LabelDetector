@@ -9,7 +9,7 @@ import java.util.Map;
  * </p>
  * @author      nelson.jeanrenaud@heig-vd.ch
  */
-public interface ILabelDetectorResult {
+public interface LabelDetectorResult {
     /**
      * <p>
      * This method returns the list of labels detected on the image.

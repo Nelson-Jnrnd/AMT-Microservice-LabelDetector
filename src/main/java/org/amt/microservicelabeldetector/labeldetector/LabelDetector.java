@@ -12,7 +12,7 @@ import java.net.URL;
  * @author nelson.jeanrenaud@heig-vd.ch
  * 
  */
-public interface ILabelDetector {
+public interface LabelDetector {
 
     /**
      *
@@ -25,7 +25,7 @@ public interface ILabelDetector {
      * @param minConfidence the minimum confidence level to accept a label.
      * @return the result of the label detection.
      */
-    ILabelDetectorResult detectLabels(byte[] image, int maxLabels, float minConfidence) throws LabelDetectorException;
+    LabelDetectorResult detectLabels(byte[] image, int maxLabels, float minConfidence) throws LabelDetectorException;
 
     /**
      *
@@ -39,7 +39,7 @@ public interface ILabelDetector {
      * @param minConfidence the minimum confidence level to accept a label.
      * @return the result of the label detection.
      */
-    ILabelDetectorResult detectLabels(String dataObject, String key, int maxLabels, float minConfidence) throws LabelDetectorException;
+    LabelDetectorResult detectLabels(String dataObject, String key, int maxLabels, float minConfidence) throws LabelDetectorException;
 
     /**
      *
@@ -52,7 +52,7 @@ public interface ILabelDetector {
      * @param minConfidence the minimum confidence level to accept a label.
      * @return the result of the label detection.
      */
-    ILabelDetectorResult detectLabels(URL url, int maxLabels, float minConfidence) throws IOException, LabelDetectorException;
+    LabelDetectorResult detectLabels(URL url, int maxLabels, float minConfidence) throws IOException, LabelDetectorException;
 
     class LabelDetectorException extends Exception {
         public LabelDetectorException(String message) {

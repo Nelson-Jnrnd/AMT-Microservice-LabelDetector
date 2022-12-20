@@ -11,12 +11,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of {@link ILabelDetector} using AWS services
+ * Implementation of {@link LabelDetector} using AWS services
  * @author De Bleser Dimitri
  * @author Peer Vincent
  * @author Nelson Jeanreneaud
  */
-public class AwsLabelDetectorHelperImpl implements ILabelDetector {
+public class AwsLabelDetectorHelperImpl implements LabelDetector {
     final RekognitionClient rekClient;
 
     public AwsLabelDetectorHelperImpl(AwsServiceConfigurator awsServiceConfigurator) {
@@ -85,7 +85,7 @@ public class AwsLabelDetectorHelperImpl implements ILabelDetector {
         return IoUtils.toByteArray(url.openStream());
     }
 
-    public static class DetectLabelResult implements ILabelDetectorResult {
+    public static class DetectLabelResult implements LabelDetectorResult {
         private final DetectLabelsResponse response;
         private DetectLabelResult(DetectLabelsResponse response) {
             this.response = response;
