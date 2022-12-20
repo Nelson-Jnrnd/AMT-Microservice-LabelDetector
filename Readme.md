@@ -5,6 +5,10 @@ It has been developped in the context of the AMT Lab along with :
 * [The DataObject Microservice](https://github.com/Nelson-Jnrnd/AMT-Microservice-DataObject)
 * [The main application](https://github.com/Nelson-Jnrnd/AMT-Microservice-Main)
 
+## Additionnal information
+
+More general information on the project are available on this [wiki](https://github.com/Nelson-Jnrnd/AMT-Microservice-Main/wiki)
+
 ## Prerequisites
 * A valid AWS account with the Rekognition service enabled
 * Java 8 or higher
