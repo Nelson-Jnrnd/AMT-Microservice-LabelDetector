@@ -9,8 +9,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.amt</groupId>
-    <artifactId>microservice-LabelDetector</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>microservice-labeldetector</artifactId>
+    <version>0.0.1</version>
     <name>microservice-LabelDetector</name>
     <description>microservice-LabelDetector</description>
     <properties>
