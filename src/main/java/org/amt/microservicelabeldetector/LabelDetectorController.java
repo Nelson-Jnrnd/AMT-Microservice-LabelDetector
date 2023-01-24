@@ -22,6 +22,7 @@ public class LabelDetectorController {
         this.labelDetector = new AwsLabelDetectorHelperImpl(new AwsServiceConfigurator.Builder().build());
     }
 
+    // TODO devrait être un GET... votre méthode s'appelle même getLabels !
     @PostMapping("/labels")
     public ResponseEntity<LabelDetectorResult> getLabels(@RequestParam("imageURL") String imageURL, @RequestParam("maxLabels") int maxLabels, @RequestParam("confidence") int confidence) {
         try {
